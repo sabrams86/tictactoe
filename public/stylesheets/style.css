@@ -6,3 +6,28 @@ body {
 a {
   color: #00B7FF;
 }
+
+.main {
+  display:inline-block;
+  margin:0 auto;
+  padding: 0px;
+  /*background-color: black;*/
+  border:0px solid black;
+}
+
+.row {
+  text-align: justify;
+  margin:0 auto;
+  border:0px solid black;
+  box-sizing: border-box;
+}
+
+.box {
+  display:inline-block;
+  box-sizing: border-box;
+  width:200px;
+  height:200px;
+  margin-left:3px;
+  background-color: white;
+  border:1px solid black;
+}
