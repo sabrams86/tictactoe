@@ -7,12 +7,14 @@ $(document).ready(function() {
   var wins = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
 
   $('.main').on('click', '.box', function(){
-    if ($(this).text().length === 0){
+    if ($(this).children().text().length === 0){
+      // console.log(state);
       if (state) {
-        $(this).text('X');
+        $(this).children().text('X');
         var thisBox = $(this).attr('id');
             thisBox = parseInt(thisBox.substr(thisBox.length -1));
         xMoves.push(thisBox);
+        state = false;
 
         for (var i =0; i < wins.length; i++){
           var result = xMoves.filter(function(Move){
@@ -25,7 +27,7 @@ $(document).ready(function() {
             winner = false;
             xMoves = [];
             oMoves = [];
-            $('.box').text('');
+            $('.box').children().text('');
           }
         }
         if(xMoves.length === 5 && winner === false){
@@ -34,7 +36,7 @@ $(document).ready(function() {
           winner = false;
           xMoves = [];
           oMoves = [];
-          $('.box').text('');
+          $('.box').children().text('');
         }
         // wins.forEach(function(combo){
         //   var result = xMoves.filter(function(Move){
@@ -44,13 +46,12 @@ $(document).ready(function() {
         //     alert("X wins!");
         //   }
         // })
-        state = false;
-
       } else {
-        $(this).text('O');
+        $(this).children().text('O');
         var thisBox = $(this).attr('id');
             thisBox = parseInt(thisBox.substr(thisBox.length -1));
         oMoves.push(thisBox);
+        state = true;
 
         wins.forEach(function(combo){
           var result = oMoves.filter(function(Move){
@@ -62,10 +63,10 @@ $(document).ready(function() {
             winner = false;
             xMoves = [];
             oMoves = [];
-            $('.box').text('');
+            $('.box').children().text('');
           }
         })
-        state = true;
+
       }
     }
   });
