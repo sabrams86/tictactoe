@@ -11,15 +11,13 @@ a {
   display:inline-block;
   margin:0 auto;
   padding: 0px;
-  /*background-color: black;*/
   border:0px solid black;
 }
 
 .row {
   margin:0 auto;
-  border:1px solid black;
+  border:0px solid black;
   box-sizing: border-box;
-  height: 205px;
 }
 
 .box {
@@ -27,7 +25,7 @@ a {
   box-sizing: border-box;
   width:200px;
   height:200px;
-  margin-left:3px;
+  margin:0;
   background-color: white;
   border:1px solid black;
   vertical-align: top;
