@@ -16,10 +16,10 @@ a {
 }
 
 .row {
-  text-align: justify;
   margin:0 auto;
-  border:0px solid black;
+  border:1px solid black;
   box-sizing: border-box;
+  height: 205px;
 }
 
 .box {
@@ -30,4 +30,8 @@ a {
   margin-left:3px;
   background-color: white;
   border:1px solid black;
+  vertical-align: top;
+  text-align: center;
+  font-size: 60px;
+  font-weight: bold;
 }
