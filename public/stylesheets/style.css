@@ -46,6 +46,7 @@ a {
 }
 
 .box {
+  cursor: pointer;
   position: relative;
   top:0;
   left:0;
