@@ -4,8 +4,9 @@ $(document).ready(function() {
 
   var playerMoves = [],
       computerMoves = [],
-      moveList = [1,2,3,4,5,6,7,8,9];
-
+      moveList = [1,2,3,4,5,6,7,8,9],
+      takenMoves = [],
+      currentMove;
   var wins = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
 
   $('.main').on('click', '.box', function(){
@@ -15,6 +16,7 @@ $(document).ready(function() {
       var thisBox = $(this).attr('id');
           thisBox = parseInt(thisBox.substr(thisBox.length -1));
       playerMoves.push(thisBox);
+      currentMove = thisBox;
       state = false;
 
       for (var i =0; i < wins.length; i++){
@@ -23,11 +25,14 @@ $(document).ready(function() {
           });
         if(result.length === 3){
           winner = true;
-          alert("X wins!");
+          alert("Player wins!");
           state = true;
           winner = false;
           playerMoves = [];
           computerMoves = [];
+          moveList = [1,2,3,4,5,6,7,8,9];
+          takenMoves = [];
+          currentMove;
           $('.box').children().text('');
         }
       }
@@ -37,15 +42,16 @@ $(document).ready(function() {
         winner = false;
         playerMoves = [];
         computerMoves = [];
+        moveList = [1,2,3,4,5,6,7,8,9];
+        takenMoves = [];
+        currentMove;
         $('.box').children().text('');
       }
 
-      var takenMoves = playerMoves.concat(computerMoves);
-      console.log(takenMoves);
-      var currentMove = takenMoves[takenMoves.length -1];
-      console.log(currentMove);
+      takenMoves = playerMoves.concat(computerMoves);
+      //currentMove = takenMoves[takenMoves.length -1];
       moveList.splice(moveList.indexOf(currentMove), 1);
-      console.log(moveList);
+      console.log("P-CM",currentMove);
       // wins.forEach(function(combo){
       //   var result = playerMoves.filter(function(Move){
       //     return Move === combo[0] || Move === combo[1] || Move === combo[2];
@@ -58,25 +64,63 @@ $(document).ready(function() {
         if (moveList.indexOf(5) >= 0 ){
           $('#box5').children().text('O');
           computerMoves.push(5);
+          currentMove = 5;
         } else {
           var startingMoves = [1,3,7,9];
           var randomStart = startingMoves[Math.floor(Math.random()*startingMoves.length)];
           $('#box'+randomStart).children().text('O');
           computerMoves.push(randomStart);
+          currentMove = randomStart;
         }
-      }
-      wins.forEach(function(combo){
-        var result = computerMoves.filter(function(Move){
-          return Move === combo[0] || Move === combo[1] || Move === combo[2];
-        });
-        if(result.length === 2){
-          var winningMove = combo.filter(function(move){
-            return move != result[0] || move != result[1];
+      } else {
+        //computer checks for winning move and takes it if available
+        wins.forEach(function(combo){
+          var result = computerMoves.filter(function(Move){
+            return Move === combo[0] || Move === combo[1] || Move === combo[2];
           });
-          console.log(winningMove);
-        }
-      })
+          if(result.length === 2){
+            var winningMove = combo.filter(function(move){
+              return move != result[0] && move != result[1];
+            });
+            if(moveList.indexOf(winningMove) >= 0 ){
+              $('#box'+winningMove[0]).children().text('O');
+              computerMoves.push(winningMove[0]);
+              currentMove = winningMove[0];
+              alert("Computer wins!");
+              state = true;
+              winner = false;
+              playerMoves = [];
+              computerMoves = [];
+              moveList = [1,2,3,4,5,6,7,8,9];
+              takenMoves = [];
+              currentMove;
+              $('.box').children().text('');
+            }
+          }
+        })
+        //computer checks for blocking move and takes it if available
+        //computer checks for winning move and takes it if available
+        wins.forEach(function(combo){
+          var result = playerMoves.filter(function(Move){
+            return Move === combo[0] || Move === combo[1] || Move === combo[2];
+          });
+          if(result.length === 2){
+            var blockingMove = combo.filter(function(move){
+              return move != result[0] && move != result[1];
+            });
+            $('#box'+blockingMove[0]).children().text('O');
+            computerMoves.push(blockingMove[0]);
+            currentMove = blockingMove[0];
+            console.log(blockingMove);
+          }
+        })
+      }
 
+      takenMoves = playerMoves.concat(computerMoves);
+      //currentMove = takenMoves[takenMoves.length -1];
+      moveList.splice(moveList.indexOf(currentMove), 1);
+      console.log("C-CM",currentMove);
+      console.log("wtf", moveList);
 
       // $(this).children().text('O');
       // var thisBox = $(this).attr('id');
