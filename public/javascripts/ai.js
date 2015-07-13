@@ -9,40 +9,31 @@ $(document).ready(function() {
     wins = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
 
   $('.main').on('click', '.box', function(){
+    //********************
+    //*** PLAYER TURN ****
+    //********************
     if ($(this).children().text().length === 0){
       $(this).children().text('X');
       var thisBox = $(this).attr('id');
       thisBox = parseInt(thisBox.substr(thisBox.length -1));
       playerMoves.push(thisBox);
       currentMove = thisBox;
-      state = false;
 
-      for (var i =0; i < wins.length; i++){
+      wins.forEach(function(combo){
         var result = playerMoves.filter(function(Move){
-          return Move === wins[i][0] || Move === wins[i][1] || Move === wins[i][2];
+          return Move === combo[0] || Move === combo[1] || Move === combo[2];
         });
         if(result.length === 3){
           alert("Player wins!");
           winner = true;
           gameOver=true;
-          playerMoves = [];
-          computerMoves = [];
-          availableMoves = [1,2,3,4,5,6,7,8,9];
-          takenMoves = [];
-          currentMove;
-          $('.box').children().text('');
+
         }
-      }
+      });
       if(playerMoves.length === 5 && winner === false){
         alert("Draw");
         winner = true;
         gameOver=true;
-        playerMoves = [];
-        computerMoves = [];
-        availableMoves = [1,2,3,4,5,6,7,8,9];
-        takenMoves = [];
-        currentMove;
-        $('.box').children().text('');
       }
 
       takenMoves = playerMoves.concat(computerMoves);
@@ -50,10 +41,22 @@ $(document).ready(function() {
       availableMoves.splice(availableMoves.indexOf(currentMove), 1);
 
       //********************
-      //*** COMPUTER *******
+      //** COMPUTER  TURN **
       //********************
+
+      /* Computer strategy
+
+      Move Priorities:
+      1. If there's a winning move, take it
+      2. If there's a blocking move, take it
+      3. Take any other available move since the game will draw no matter what at this point
+
+      Starting Strategy:
+      If the center is open, take it, otherwise choose a random corner.
+
+      */
+
       //if it's the computer's first move
-      console.log(availableMoves, gameOver);
       if (availableMoves.length === 8 && gameOver === false) {
         //pick center if it's available
         if (availableMoves.indexOf(5) >= 0 ){
@@ -86,14 +89,8 @@ $(document).ready(function() {
                 computerMoves.push(winningMove[0]);
                 currentMove = winningMove[0];
                 alert("Computer wins!");
+                gameOver = true;
                 winner = true;
-                gameOver=true;
-                playerMoves = [];
-                computerMoves = [];
-                availableMoves = [1,2,3,4,5,6,7,8,9];
-                takenMoves = [];
-                currentMove;
-                $('.box').children().text('');
               }
             }
           })
@@ -114,22 +111,24 @@ $(document).ready(function() {
               }
               currentMove = blockingMove[0];
             }
-          })//computer takes blocking move
+          })
         }
         if(winner === false && computerMoves.length < playerMoves.length){
-          //if there are no blocking or winning moves, computer takes any move
+          //if there are no blocking or winning moves, computer takes any remaining move
           var randomPlay = availableMoves[Math.floor(Math.random()*availableMoves.length)];
           $('#box'+randomPlay).children().text('O');
           computerMoves.push(randomPlay);
           currentMove = randomPlay;
         }
 
-      }//computers non first move
+      }
+
       if (winner === false){
         takenMoves = playerMoves.concat(computerMoves);
         currentMove = computerMoves[computerMoves.length -1];
         availableMoves.splice(availableMoves.indexOf(currentMove), 1);
       }
+      //if the game is over, reset all of the variables
       if (gameOver === true){
         winner = false;
         gameOver = false;

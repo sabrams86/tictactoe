@@ -1,32 +1,9 @@
 extends layout
 
 block content
-  h1 Tic Tac Toe
+  h1 Tic Tac Toe (Player vs Player)
   a(href='/computer') Play vs the Computer
-  .mainzero
-    .main
-      .main-overlay
-        .row  
-          #box1.box
-            .boxTxt
-          #box2.box
-            .boxTxt
-          #box3.box
-            .boxTxt
-        .row  
-          #box4.box
-            .boxTxt
-          #box5.box
-            .boxTxt
-          #box6.box
-            .boxTxt
-        .row  
-          #box7.box
-            .boxTxt
-          #box8.box
-            .boxTxt
-          #box9.box
-            .boxTxt
+  include _gameboard
 block javascript
   script(src="/javascripts/clientside.js" type="text/javascript")
   
